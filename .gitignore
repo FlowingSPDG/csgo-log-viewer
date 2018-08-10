@@ -1,5 +1,8 @@
 # Logs
 logs
+CURRENT
+LOG
+MANIFEST-*
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -59,3 +62,13 @@ typings/
 
 # next.js build output
 .next
+MANIFEST-000010
+MANIFEST-000002
+LOG.old
+LOG
+LOCK
+CURRENT
+CURRENT
+LOG
+MANIFEST-000002
+MANIFEST-000002
