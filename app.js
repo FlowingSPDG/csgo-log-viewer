@@ -23,15 +23,16 @@ var options = {
 var matchstart = 'Match_Start';
 //document.write("Hello");
 var msg = String ();
-var arraymsg = Array ();
+//var arraymsg = Array ();
+var arraymsg = String ();
 var receiver = new logReceiver.LogReceiver();
 receiver.on("data", function(data) {
 	if (data.isValid) {
 		console.log("Received at " + data.receivedAt.format() + " a log of type " + data.packetType);
 		console.log(data.message);
 		msg = (data.message);
-		arraymsg.push (data.message);
-		arraymsg.push ("<br>");
+		arraymsg += (data.message);
+		arraymsg += ("<br>");
 		//if (data.message.indexOf (matchstart) > -1) {
 		//document.write("Match started");
 		//}
