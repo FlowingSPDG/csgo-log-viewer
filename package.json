@@ -1,17 +1,22 @@
 {
   "name": "srcds-log-viewer",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www"
   },
-  "author": "FlowingSPDG",
-  "license": "MIT",
+  "dependencies": {
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.0",
+    "pug": "^2.0.3"
+  },
   "devDependencies": {
-    "express": "^4.16.3",
     "level": "^4.0.0",
-    "srcds-log-receiver": "^1.0.0",
+    "levelup": "^3.1.1",
     "swig": "^1.4.2"
   }
 }
