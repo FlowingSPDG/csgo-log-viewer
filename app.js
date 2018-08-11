@@ -57,6 +57,15 @@ app.get('/', (req, res) => {
   });
 });
 
+app.get('/ajax', (req, res) => {
+  res.render('ajax', {
+	'title' : 'CS:GO Server Log viewer',  
+    'name': 'jon',
+    'content': 'Hello World',
+	'msg' : (arraymsg)
+  });
+});
+
 app.listen(3001, function () {
   console.log('CSGO Log receiver listening on port 3001!');
 });
