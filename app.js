@@ -31,12 +31,45 @@ receiver.on("data", function(data) {
 		console.log("Received at " + data.receivedAt.format() + " a log of type " + data.packetType);
 		console.log(data.message);
 		msg = (data.message);
-		arraymsg += (data.message);
-		arraymsg += ("<br>");
-		//if (data.message.indexOf (matchstart) > -1) {
-		//document.write("Match started");
-		//}
+		//メッセージ送信処理
+		//msg = (data.message);
+		//arraymsg += (data.message);
+		//arraymsg += ("<br>");
+		
+			if (msg.indexOf("killed") > -1){
+				console.log("KILLED!!");				
+				console.log(msg);
+				arraymsg += ("<b>");
+				arraymsg += (data.message);
+				arraymsg += ("</b>");
+			}
+			else if (msg.indexOf("Round_Start") > -1){
+				console.log("ROUND HAS STARTED!!");
+				console.log(msg);
+				arraymsg += ("<h2>");
+				arraymsg += ("ROUND HAS STARTED!!");
+				arraymsg += ("</h2>");
+			}
+			else if (msg.indexOf('World triggered "Round_End"') > -1){
+				console.log("ROUND HAS ENDED!");
+				console.log(msg);
+				arraymsg += ("<h2>");
+				arraymsg += ("ROUND HAS ENDED!");
+				arraymsg += ("</h2>");
+			}
+			else if (msg.indexOf("Game Over:") > -1){
+				console.log("MATCH IS OVER!!!");
+				console.log(msg);
+				arraymsg += ("<h1>");
+				arraymsg += ("MATCH IS OVER!!!");
+				arraymsg += ("</h1>");
+			}
+			else {
+				arraymsg += (data.message);
+				arraymsg += ("<br>");
+			}
 	}
+
 });
 receiver.on("invalid", function(invalidMessage) {
 	console.log("Got some completely unparseable gargbase: " + invalidMessage);
@@ -57,14 +90,14 @@ app.get('/', (req, res) => {
   });
 });
 
-app.get('/ajax', (req, res) => {
+/*app.get('/ajax', (req, res) => {
   res.render('ajax', {
 	'title' : 'CS:GO Server Log viewer',  
     'name': 'jon',
     'content': 'Hello World',
 	'msg' : (arraymsg)
   });
-});
+});*/
 
 app.listen(3001, function () {
   console.log('CSGO Log receiver listening on port 3001!');
