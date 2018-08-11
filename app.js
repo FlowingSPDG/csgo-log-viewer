@@ -14,6 +14,7 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(express.static('public'));
 
 
 var logReceiver = require("srcds-log-receiver");
@@ -39,7 +40,7 @@ receiver.on("data", function(data) {
 			if (msg.indexOf("killed") > -1){
 				console.log("KILLED!!");				
 				console.log(msg);
-				arraymsg += ("<b>");
+				arraymsg += ('<b class="killlog">');
 				arraymsg += (data.message);
 				arraymsg += ("</b>");
 			}
@@ -65,8 +66,9 @@ receiver.on("data", function(data) {
 				arraymsg += ("</h1>");
 			}
 			else {
+				arraymsg += ('<p class="logs">');
 				arraymsg += (data.message);
-				arraymsg += ("<br>");
+				arraymsg += ("</p>");
 			}
 	}
 

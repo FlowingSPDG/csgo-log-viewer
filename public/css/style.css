@@ -1,0 +1,28 @@
+@keyframes killfeed {
+	from {
+		/*width: 0px;*/
+		top: 500px;
+		opacity: 0;
+  	}
+	to {
+		/*width: 1050px;*/
+		top: 0px;
+		opacity: 1;
+	}
+}
+
+h1 {
+	font-weight: normal;
+	color: red;
+}
+
+.logs{
+	font-weight: normal;
+}
+
+.killlog{
+	font-weight: bold;
+	animation: killfeed;
+	animation-duration: 2s;
+	position: relative;
+}
