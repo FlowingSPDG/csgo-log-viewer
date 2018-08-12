@@ -26,51 +26,96 @@ var options = {
 var matchstart = 'Match_Start';
 //document.write("Hello");
 var msg = String ();
-//var arraymsg = Array ();
-var arraymsg = String ();
+//var msgstring = Array ();
+var msgstring = String ();
 var receiver = new logReceiver.LogReceiver();
 receiver.on("data", function(data) {
 	if (data.isValid) {
-		console.log("Received at " + data.receivedAt.format() + " a log of type " + data.packetType);
+		//console.log("Received at " + data.receivedAt.format() + " a log of type " + data.packetType);
 		console.log(data.message);
 		msg = (data.message);
 		//メッセージ送信処理
 		//msg = (data.message);
-		//arraymsg += (data.message);
-		//arraymsg += ("<br>");
+		//msgstring += (data.message);
+		//msgstring += ("<br>");
 		
 			if (msg.indexOf("killed") > -1){
 				console.log("KILLED!!");				
 				console.log(msg);
-				arraymsg += ('<b class="killlog">');
-				arraymsg += (data.message);
-				arraymsg += ("</b>");
+				msgstring += ('<b class="killlog">');
+				msgstring += (data.message);
+				msgstring += ("</b><br>");
 			}
-			else if (msg.indexOf("Round_Start") > -1){
+			else if (msg.indexOf('World triggered "Match_Start"') > -1){
 				console.log("ROUND HAS STARTED!!");
 				console.log(msg);
-				arraymsg += ("<h2>");
-				arraymsg += ("ROUND HAS STARTED!!");
-				arraymsg += ("</h2>");
+				msgstring += ("<h2>");
+				msgstring += ("ROUND HAS STARTED!!");
+				msgstring += ("</h2>");
+			}
+			else if (msg.indexOf('World triggered "Round_Start"') > -1){
+				console.log("ROUND HAS STARTED!");
+				console.log(msg);
+				msgstring += ("<h2>");
+				msgstring += ("ROUND HAS STARTED!");
+				msgstring += ("</h2>");
 			}
 			else if (msg.indexOf('World triggered "Round_End"') > -1){
 				console.log("ROUND HAS ENDED!");
 				console.log(msg);
-				arraymsg += ("<h2>");
-				arraymsg += ("ROUND HAS ENDED!");
-				arraymsg += ("</h2>");
+				msgstring += ("<h2>");
+				msgstring += ("ROUND HAS ENDED!");
+				msgstring += ("</h2>");
+			}
+			else if (msg.indexOf('triggered "Planted_The_Bomb"') > -1){
+				console.log("BOMB HAS BEEN PLANTED!");
+				console.log(msg);
+				msgstring += ("<h2>");
+				msgstring += ("BOMB HAS BEEN PLANTED!");
+				msgstring += ("</h2>");
 			}
 			else if (msg.indexOf("Game Over:") > -1){
 				console.log("MATCH IS OVER!!!");
 				console.log(msg);
-				arraymsg += ("<h1>");
-				arraymsg += ("MATCH IS OVER!!!");
-				arraymsg += ("</h1>");
+				msgstring += ("<h1>");
+				msgstring += ("MATCH IS OVER!!!");
+				msgstring += ("</h1>");
+			}
+			else if (msg.indexOf('say "') > -1){
+				console.log("Say command detected");
+				console.log(msg);
+				msgstring += ('<p class="say">');
+				msgstring += (msg);
+				msgstring += ('</p>');
+			}
+			else if (msg.indexOf("attacked") > -1){
+				console.log("Attack log detected");
+				console.log(msg);
+			}
+			else if (msg.indexOf("purchased") > -1){
+				console.log("Purchased log detected");
+				console.log(msg);
+			}
+			else if (msg.indexOf("server_cvar") > -1){
+				console.log("server_cvar log detected");
+				console.log(msg);
+			}
+			else if (msg.indexOf("blinded") > -1){
+				console.log("blinded log detected");
+				console.log(msg);
+			}
+			else if (msg.indexOf("threw") > -1){
+				console.log("threw log detected");
+				console.log(msg);
+			}
+			else if (msg.indexOf("left buyzone") > -1){
+				console.log("left buyzone log detected");
+				console.log(msg);
 			}
 			else {
-				arraymsg += ('<p class="logs">');
-				arraymsg += (data.message);
-				arraymsg += ("</p>");
+				msgstring += ('<p class="logs">');
+				msgstring += (data.message);
+				msgstring += ("</p>");
 			}
 	}
 
@@ -89,7 +134,7 @@ app.get('/', (req, res) => {
   res.render('index', {
 	'title' : 'CS:GO Server Log viewer',  
     'content': 'Hello World',
-	'msg' : (arraymsg)
+	'msg' : (msgstring)
   });
 });
 
@@ -97,7 +142,7 @@ app.get('/', (req, res) => {
 
 app.get('/ajax', (req, res) => {
   res.render('ajax', {
-	'msg' : (arraymsg)
+	'msg' : (msgstring)
   });
 });
 

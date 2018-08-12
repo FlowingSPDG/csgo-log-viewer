@@ -20,6 +20,11 @@ h1 {
 	font-weight: normal;
 }
 
+.say{
+	font-weight: bold;
+	color: blue;
+}
+
 .killlog{
 	font-weight: bold;
 	/*
