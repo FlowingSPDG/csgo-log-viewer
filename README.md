@@ -2,5 +2,8 @@
 
 Based by https://github.com/OpenSourceLAN/srcds-log-receiver
 
-node app.js
+npm i  
+node app.js  
+  
+configure your srcds
 open localhost:3001 by Browser
