@@ -28,6 +28,8 @@ var matchstart = 'Match_Start';
 var msg = String ();
 //var msgstring = Array ();
 var msgstring = String ();
+var triggerednum = Number ();
+var name = String ();
 var receiver = new logReceiver.LogReceiver();
 receiver.on("data", function(data) {
 	if (data.isValid) {
@@ -47,10 +49,10 @@ receiver.on("data", function(data) {
 				msgstring += ("</b><br>");
 			}
 			else if (msg.indexOf('World triggered "Match_Start"') > -1){
-				console.log("ROUND HAS STARTED!!");
+				console.log("MATCH HAS STARTED!!");
 				console.log(msg);
 				msgstring += ("<h2>");
-				msgstring += ("ROUND HAS STARTED!!");
+				msgstring += ("MATCH HAS STARTED!!");
 				msgstring += ("</h2>");
 			}
 			else if (msg.indexOf('World triggered "Round_Start"') > -1){
@@ -70,9 +72,64 @@ receiver.on("data", function(data) {
 			else if (msg.indexOf('triggered "Planted_The_Bomb"') > -1){
 				console.log("BOMB HAS BEEN PLANTED!");
 				console.log(msg);
+				//var result = msg.substr(23);
+				//var result2 = result.substr(-25,20);
+				
+				var triggerednum = msg.indexOf('triggered',23); //文字列"triggered"が見つかった場所を返す
+				console.log(triggerednum);
+				var result = msg.substr(triggerednum); //triggered以降の文字列を返す
+				var namekari = msg.substr(23,triggerednum); //日時の文字列を削除
+				var triggerednamepos = namekari.indexOf("<"); //<の文字列が見つかった場所を返す
+				triggerednamepos--; //二重引用符削除
+				var name = namekari.substr(1,triggerednamepos);
+				
+				
+				console.log(result);
 				msgstring += ("<h2>");
-				msgstring += ("BOMB HAS BEEN PLANTED!");
+				msgstring += ('<font color="red">');
+				msgstring += (name);
+				msgstring += ('</font>');
+				msgstring += (" PLANTED THE BOMB!");
 				msgstring += ("</h2>");
+			}
+			else if (msg.indexOf('triggered "Dropped_The_Bomb"') > -1){
+				console.log("BOMB DROPPED!");
+				console.log(msg);
+				//var result = msg.substr(23);
+				//var result2 = result.substr(-25,20);
+				
+				var triggerednum = msg.indexOf('triggered',23); //文字列"triggered"が見つかった場所を返す
+				console.log(triggerednum);
+				var result = msg.substr(triggerednum); //triggered以降の文字列を返す
+				var namekari = msg.substr(23,triggerednum); //日時の文字列を削除
+				var triggerednamepos = namekari.indexOf("<"); //<の文字列が見つかった場所を返す
+				triggerednamepos--; //二重引用符削除
+				var name = namekari.substr(1,triggerednamepos);
+				
+				console.log(result);
+				msgstring += ("<h3>");
+				msgstring += ('<font color="red">');
+				msgstring += (name);
+				msgstring += ('</font>');
+				msgstring += (" DROPPED BOMB!");
+				msgstring += ("</h3>");
+			}
+			else if (msg.indexOf('triggered "Got_The_Bomb"') > -1){
+				console.log("BOMB HAS BEEN TAKEN!");
+				console.log(msg);
+				var triggerednum = msg.indexOf('triggered',23); //文字列"triggered"が見つかった場所を返す
+				console.log(triggerednum);
+				var result = msg.substr(triggerednum); //triggered以降の文字列を返す
+				var namekari = msg.substr(23,triggerednum); //日時の文字列を削除
+				var triggerednamepos = namekari.indexOf("<"); //<の文字列が見つかった場所を返す
+				triggerednamepos--; //二重引用符削除
+				var name = namekari.substr(1,triggerednamepos);
+				msgstring += ("<h3>");
+				msgstring += ('<font color="red">');
+				msgstring += (name);
+				msgstring += ('</font>');
+				msgstring += (' GOT THE BOMB!');
+				msgstring += ("</h3>");
 			}
 			else if (msg.indexOf("Game Over:") > -1){
 				console.log("MATCH IS OVER!!!");
@@ -110,6 +167,10 @@ receiver.on("data", function(data) {
 			}
 			else if (msg.indexOf("left buyzone") > -1){
 				console.log("left buyzone log detected");
+				console.log(msg);
+			}
+			else if (msg.indexOf("Molotov projectile spawned") > -1){
+				console.log("Molotov log detected");
 				console.log(msg);
 			}
 			else {
