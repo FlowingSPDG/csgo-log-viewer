@@ -30,6 +30,9 @@ var msg = String ();
 var msgstring = String ();
 var triggerednum = Number ();
 var name = String ();
+var chatmsg = String ();
+var chatmsg2 = String ();
+var chatmsgpos = Number ();
 var receiver = new logReceiver.LogReceiver();
 receiver.on("data", function(data) {
 	if (data.isValid) {
@@ -85,12 +88,12 @@ receiver.on("data", function(data) {
 				
 				
 				console.log(result);
-				msgstring += ("<h2>");
+				msgstring += ("<h3>");
 				msgstring += ('<font color="red">');
 				msgstring += (name);
 				msgstring += ('</font>');
 				msgstring += (" PLANTED THE BOMB!");
-				msgstring += ("</h2>");
+				msgstring += ("</h3>");
 			}
 			else if (msg.indexOf('triggered "Dropped_The_Bomb"') > -1){
 				console.log("BOMB DROPPED!");
@@ -131,6 +134,66 @@ receiver.on("data", function(data) {
 				msgstring += (' GOT THE BOMB!');
 				msgstring += ("</h3>");
 			}
+			else if (msg.indexOf('SFUI_Notice_Terrorists_Win') > -1){
+				if (msg.indexOf('(T "16")') > -1){
+					console.log("MATCH IS OVER!!");
+					console.log(msg);
+					msgstring += ("<h1>");
+					msgstring += ("MATCH IS OVER!!!");
+					msgstring += ("<br>");
+					msgstring += ("TERRORISTS WINS!");
+					msgstring += ("</h1>");
+					/*channel = client.channels.get('409362106450837515'); //report
+					channel.send(data.message);
+					channel.send('CT WINS!');*/
+				}
+				else {
+					console.log("ROUND IS OVER!!");
+					console.log(msg);
+					msgstring += ('<h3 class="trwin">');
+					msgstring += ("Terrorists wins the round!");
+					msgstring += ("</h3>");
+				}
+			}
+			else if (msg.indexOf('SFUI_Notice_Target_Bombed') > -1){
+				if (msg.indexOf('(T "16")') > -1){
+					console.log("MATCH IS OVER!!");
+					console.log(msg);
+					msgstring += ("<h1>");
+					msgstring += ("MATCH IS OVER!!!");
+					msgstring += ("<br>");
+					msgstring += ("TERRORISTS WINS!");
+					msgstring += ("</h1>");
+					/*channel = client.channels.get('409362106450837515'); //report
+					channel.send(data.message);
+					channel.send('CT WINS!');*/
+				}
+				else {
+					console.log("ROUND IS OVER!!");
+					console.log(msg);
+					msgstring += ('<h3 class="trwin">');
+					msgstring += ("Terrorists wins the round!");
+					msgstring += ("</h3>");
+				}
+			}
+			else if (msg.indexOf('SFUI_Notice_CTs_Win') > -1){
+				if (msg.indexOf('(CT "16")') > -1){
+					console.log("MATCH IS OVER!!");
+					console.log(msg);
+					msgstring += ("<h1>");
+					msgstring += ("MATCH IS OVER!!!");
+					msgstring += ("<br>");
+					msgstring += ("COUNTER TERRORISTS WINS!");
+					msgstring += ("</h1>");
+				}
+				else {
+					console.log("ROUND IS OVER!!");
+					console.log(msg);
+					msgstring += ('<h3 class="ctwin">');
+					msgstring += ("Counter-errorists wins the round!");
+					msgstring += ("</h3>");
+				}
+			}
 			else if (msg.indexOf("Game Over:") > -1){
 				console.log("MATCH IS OVER!!!");
 				console.log(msg);
@@ -141,8 +204,20 @@ receiver.on("data", function(data) {
 			else if (msg.indexOf('say "') > -1){
 				console.log("Say command detected");
 				console.log(msg);
-				msgstring += ('<p class="say">');
-				msgstring += (msg);
+				
+				var namekari = msg.substr(23); // 日時の文字列を削除
+				var namepos = namekari.indexOf('<'); // <が見つかった場所を返す
+				console.log(chatmsgpos);
+				namepos--; //二重引用符削除
+				var name = namekari.substr(1,namepos);
+				
+				var chatpos = namekari.indexOf('say "'); // sayが見つかった場所を返す
+				chatpos = chatpos+=5; //二重引用符削除
+				var chatmsgkari = namekari.substr(chatpos);
+				var chatmsg = chatmsgkari.substring( 0, chatmsgkari.length-1 );
+				
+				msgstring += ('<p class="chat">');
+				msgstring += (name + ' ' + ':' + ' ' + chatmsg);
 				msgstring += ('</p>');
 			}
 			else if (msg.indexOf("attacked") > -1){
@@ -171,6 +246,14 @@ receiver.on("data", function(data) {
 			}
 			else if (msg.indexOf("Molotov projectile spawned") > -1){
 				console.log("Molotov log detected");
+				console.log(msg);
+			}
+			else if (msg.indexOf("assisted killing") > -1){
+				console.log("Assisted log detected");
+				console.log(msg);
+			}
+			else if (msg.indexOf("Starting Freeze period") > -1){
+				console.log("Freezetime log detected");
 				console.log(msg);
 			}
 			else {

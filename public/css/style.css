@@ -20,9 +20,20 @@ h1 {
 	font-weight: normal;
 }
 
-.say{
+.chat{
 	font-weight: bold;
 	color: blue;
+	position: relative;
+}
+
+.ctwin{
+	font-weight: bold;
+	color: cyan;
+}
+
+.trwin{
+	font-weight: bold;
+	color: orange;
 }
 
 .killlog{
