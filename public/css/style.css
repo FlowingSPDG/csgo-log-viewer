@@ -22,7 +22,9 @@ h1 {
 
 .killlog{
 	font-weight: bold;
+	/*
 	animation: killfeed;
+	*/
 	animation-duration: 2s;
 	position: relative;
 }

@@ -3,6 +3,7 @@ const fs = require('fs');
 const swig  = require('swig');
 const levelup = require('level');
 var path = require('path');// view engine setup
+//var ajax = require('./routes/ajax');
 let db = levelup('.', {valueEncoding: 'json'});
 
 
@@ -13,8 +14,9 @@ const app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
-
+router = express.Router();
 app.use(express.static('public'));
+
 
 
 var logReceiver = require("srcds-log-receiver");
@@ -91,14 +93,13 @@ app.get('/', (req, res) => {
   });
 });
 
-/*app.get('/ajax', (req, res) => {
+//app.use('/ajax', ajax);
+
+app.get('/ajax', (req, res) => {
   res.render('ajax', {
-	'title' : 'CS:GO Server Log viewer',  
-    'name': 'jon',
-    'content': 'Hello World',
 	'msg' : (arraymsg)
   });
-});*/
+});
 
 app.listen(3001, function () {
   console.log('CSGO Log receiver listening on port 3001!');
