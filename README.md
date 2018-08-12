@@ -6,5 +6,5 @@ npm i
 node app.js  
   
 configure your srcds  
-exec server_log_enable.cfg
+exec server_log_enable.cfg  
 open localhost:3001 by Browser
