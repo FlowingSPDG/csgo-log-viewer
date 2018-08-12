@@ -86,7 +86,6 @@ receiver.on("invalid", function(invalidMessage) {
 app.get('/', (req, res) => {
   res.render('index', {
 	'title' : 'CS:GO Server Log viewer',  
-    'name': 'jon',
     'content': 'Hello World',
 	'msg' : (arraymsg)
   });
