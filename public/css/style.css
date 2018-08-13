@@ -36,11 +36,13 @@ h1 {
 	color: orange;
 }
 
-.killlog{
+.killlogdiv{
 	font-weight: bold;
 	/*
 	animation: killfeed;
-	*/
 	animation-duration: 2s;
+	*/
+	top: 0%;
 	position: relative;
+	left: 40%;
 }

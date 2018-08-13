@@ -1,4 +1,8 @@
 extends layout
 
 block content
-	p!= msg
+	style(src="css/style.css")
+	#msgdiv
+		p!= msg
+	#killlogdiv
+		p!= killlog

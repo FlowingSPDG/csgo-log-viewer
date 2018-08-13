@@ -28,11 +28,14 @@ var matchstart = 'Match_Start';
 var msg = String ();
 //var msgstring = Array ();
 var msgstring = String ();
+var killlog = String ();
 var triggerednum = Number ();
 var name = String ();
 var chatmsg = String ();
 var chatmsg2 = String ();
 var chatmsgpos = Number ();
+var devprefix = String ();
+devprefix = ('[DEBUG] : ');
 var receiver = new logReceiver.LogReceiver();
 receiver.on("data", function(data) {
 	if (data.isValid) {
@@ -47,9 +50,27 @@ receiver.on("data", function(data) {
 			if (msg.indexOf("killed") > -1){
 				console.log("KILLED!!");				
 				console.log(msg);
-				msgstring += ('<b class="killlog">');
-				msgstring += (data.message);
-				msgstring += ("</b><br>");
+				//msgstring += ('<b class="killlog">' + data.message + "</b><br>");
+				var namekari = msg.substr(23,triggerednum); //日時を削除
+				var triggerednamepos = namekari.indexOf("<"); //<の文字列が見つかった場所を返す
+				triggerednamepos--; //二重引用符削除
+				var killer = namekari.substr(1,triggerednamepos);
+				var victimnamepos = namekari.indexOf('killed "'); //killedが見つかった場所を返す
+				victimnamepos = victimnamepos + 6; //二重引用符削除
+				var victimkari = namekari.substr(victimnamepos);
+				var victimnamepos2 = victimkari.indexOf('<'); // <が見つかった場所を返す
+				victimnamepos2--;
+				victimnamepos2--;
+				var victim = victimkari.substr(2,victimnamepos2); //二重引用符対策に1文字目から
+				var weaponnamepos = namekari.indexOf("with "); // withの文字列が見つかった場所を返す,weapon
+				weaponnamepos--;
+				var weaponnamekari = namekari.substr(weaponnamepos);
+				var weaponnamepos2 = weaponnamekari.indexOf('"'); // "が見つかった場所を返す,weapon
+				var weaponname = weaponnamekari.substr(weaponnamepos2);
+				
+				console.log( devprefix + 'KILLER = ' + killer + ',' + 'VICTIM IS' + victim + 'WEAPON IS ' + weaponname);
+				//killlog += ('<b class="killlog">'　+ killer + ' killed ' + victim + ' with ' + weaponname + '</b>' + '<br>');
+				msgstring += ('<b class="killlog">'　+ killer + ' killed ' + victim + ' with ' + weaponname + '</b>' + '<br>');
 			}
 			else if (msg.indexOf('World triggered "Match_Start"') > -1){
 				console.log("MATCH HAS STARTED!!");
@@ -134,6 +155,52 @@ receiver.on("data", function(data) {
 				msgstring += (' GOT THE BOMB!');
 				msgstring += ("</h3>");
 			}
+			else if (msg.indexOf('Begin_Bomb_Defuse') > -1){
+				console.log("BOMB DEFUSE STARTED!");
+				console.log(msg);
+				//var result = msg.substr(23);
+				//var result2 = result.substr(-25,20);
+				
+				var triggerednum = msg.indexOf('triggered',23); //文字列"triggered"が見つかった場所を返す
+				console.log(triggerednum);
+				var result = msg.substr(triggerednum); //triggered以降の文字列を返す
+				var namekari = msg.substr(23,triggerednum); //日時の文字列を削除
+				var triggerednamepos = namekari.indexOf("<"); //<の文字列が見つかった場所を返す
+				triggerednamepos--; //二重引用符削除
+				var name = namekari.substr(1,triggerednamepos);
+				
+				
+				console.log(result);
+				msgstring += ("<h3>");
+				msgstring += ('<font color="cyan">');
+				msgstring += (name);
+				msgstring += ('</font>');
+				msgstring += (" IS TRYING TO DEFUSE THE BOMB!");
+				msgstring += ("</h3>");
+			}
+			else if (msg.indexOf('"Defused_The_Bomb"') > -1){
+				console.log("BOMB HAS BEEN DEFUSED!");
+				console.log(msg);
+				//var result = msg.substr(23);
+				//var result2 = result.substr(-25,20);
+				
+				var triggerednum = msg.indexOf('triggered',23); //文字列"triggered"が見つかった場所を返す
+				console.log(triggerednum);
+				var result = msg.substr(triggerednum); //triggered以降の文字列を返す
+				var namekari = msg.substr(23,triggerednum); //日時の文字列を削除
+				var triggerednamepos = namekari.indexOf("<"); //<の文字列が見つかった場所を返す
+				triggerednamepos--; //二重引用符削除
+				var name = namekari.substr(1,triggerednamepos);
+				
+				
+				console.log(result);
+				msgstring += ("<h3>");
+				msgstring += ('<font color="cyan">');
+				msgstring += (name);
+				msgstring += ('</font>');
+				msgstring += (" DEFUSED THE BOMB!");
+				msgstring += ("</h3>");
+			}
 			else if (msg.indexOf('SFUI_Notice_Terrorists_Win') > -1){
 				if (msg.indexOf('(T "16")') > -1){
 					console.log("MATCH IS OVER!!");
@@ -146,6 +213,11 @@ receiver.on("data", function(data) {
 					/*channel = client.channels.get('409362106450837515'); //report
 					channel.send(data.message);
 					channel.send('CT WINS!');*/
+					msgstring += ('<h1>');
+					msgstring += ('MATCH HISTORY WILL BE CLEAR IN 10sec...');
+					msgstring += ('</h1>');
+					//sleep(10000);
+					msgstring = String ();
 				}
 				else {
 					console.log("ROUND IS OVER!!");
@@ -167,6 +239,11 @@ receiver.on("data", function(data) {
 					/*channel = client.channels.get('409362106450837515'); //report
 					channel.send(data.message);
 					channel.send('CT WINS!');*/
+					msgstring += ('<h1>');
+					msgstring += ('MATCH HISTORY WILL BE CLEAR IN 10sec...');
+					msgstring += ('</h1>');
+					sleep(10000);
+					msgstring = String ();
 				}
 				else {
 					console.log("ROUND IS OVER!!");
@@ -185,6 +262,34 @@ receiver.on("data", function(data) {
 					msgstring += ("<br>");
 					msgstring += ("COUNTER TERRORISTS WINS!");
 					msgstring += ("</h1>");
+					msgstring += ('<h1>');
+					msgstring += ('MATCH HISTORY WILL BE CLEAR IN 10sec...');
+					msgstring += ('</h1>');
+					sleep(10000);
+					msgstring = String ();
+				}
+				else {
+					console.log("ROUND IS OVER!!");
+					console.log(msg);
+					msgstring += ('<h3 class="ctwin">');
+					msgstring += ("Counter-errorists wins the round!");
+					msgstring += ("</h3>");
+				}
+			}
+			else if (msg.indexOf('SFUI_Notice_Bomb_Defused') > -1){
+				if (msg.indexOf('(CT "16")') > -1){
+					console.log("MATCH IS OVER!!");
+					console.log(msg);
+					msgstring += ("<h1>");
+					msgstring += ("MATCH IS OVER!!!");
+					msgstring += ("<br>");
+					msgstring += ("COUNTER TERRORISTS WINS!");
+					msgstring += ("</h1>");
+					msgstring += ('<h1>');
+					msgstring += ('MATCH HISTORY WILL BE CLEAR IN 10sec...');
+					msgstring += ('</h1>');
+					sleep(10000);
+					msgstring = String ();
 				}
 				else {
 					console.log("ROUND IS OVER!!");
@@ -200,6 +305,11 @@ receiver.on("data", function(data) {
 				msgstring += ("<h1>");
 				msgstring += ("MATCH IS OVER!!!");
 				msgstring += ("</h1>");
+				msgstring += ('<h1>');
+				msgstring += ('MATCH HISTORY WILL BE CLEAR IN 10sec...');
+				msgstring += ('</h1>');
+				sleep(10000);
+				msgstring = String ();
 			}
 			else if (msg.indexOf('say "') > -1){
 				console.log("Say command detected");
@@ -218,6 +328,61 @@ receiver.on("data", function(data) {
 				
 				msgstring += ('<p class="chat">');
 				msgstring += (name + ' ' + ':' + ' ' + chatmsg);
+				msgstring += ('</p>');
+			}
+			else if (msg.indexOf('switched from team') > -1){
+				console.log("Team switch");
+				console.log(msg);
+				
+				var namekari = msg.substr(23); // 日時を削除
+				var namepos = namekari.indexOf('<'); // <が見つかった場所を返す
+				console.log(chatmsgpos);
+				namepos--; //二重引用符削除
+				var name = namekari.substr(1,namepos);
+				
+				var switchpos = namekari.indexOf('switched from team <'); // switchが見つかった場所を返す
+				switchpos = switchpos+=2; //二重引用符削除
+				var switchkari = namekari.substr(switchpos);
+				var switchpos2 = switchkari.indexOf('<'); // <が見つかった場所を返す
+				var switchlog = switchkari.substr(switchpos2);
+				
+				var frompos1 = switchlog.indexOf('<'); // 最初の<が見つかった場所を返す
+				var frompos2 = switchlog.indexOf('>'); // 最初の<が見つかった場所を返す
+				frompos1++;
+				frompos2--;
+				var teamfrom = switchlog.substr(frompos1,frompos2);
+				
+				var topos1 = switchlog.indexOf('to <'); // toが見つかった場所を返す
+				topos1 = topos1 +4;
+				var teamtokari = switchlog.substr(topos1,topos2);
+				var topos2 = teamtokari.indexOf('>'); // 最後の<が見つかった場所を返す
+				var teamto = teamtokari.substr(0,topos2);
+				
+				if ( teamto == 'TERRORIST') {
+					teamto = '<font color=orange>' + teamto + '</font>';
+				}
+				if ( teamto == 'CT') {
+					teamto = '<font color=cyan>' + teamto + '</font>';
+				}
+				if ( teamto == 'Spectator') {
+					teamto = '<font color=grey>' + teamto + '</font>';
+				}
+				if ( teamfrom == 'TERRORIST') {
+					teamfrom = '<font color=orange>' + teamfrom +'</font>';
+				}
+				if ( teamfrom == 'CT') {
+					teamfrom = '<font color=cyan>' + teamfrom + '</font>';
+				}
+				if ( teamfrom == 'Spectator') {
+					teamfrom = '<font color=grey>' + teamfrom + '</font>';
+				}
+				
+				
+				console.log ( devprefix + 'switchlog is' + ' : ' + switchlog);
+				console.log ( devprefix + 'teamfrom is' + ' : ' + teamfrom);
+				console.log ( devprefix + 'teamto is' + ' : ' + teamto);
+				msgstring += ('<p class="switch">');
+				msgstring += (name + ' has switched team ' + teamfrom + ' to ' + teamto);
 				msgstring += ('</p>');
 			}
 			else if (msg.indexOf("attacked") > -1){
@@ -278,7 +443,8 @@ app.get('/', (req, res) => {
   res.render('index', {
 	'title' : 'CS:GO Server Log viewer',  
     'content': 'Hello World',
-	'msg' : (msgstring)
+	'msg' : (msgstring),
+	'killlog' : (killlog)
   });
 });
 
@@ -286,7 +452,8 @@ app.get('/', (req, res) => {
 
 app.get('/ajax', (req, res) => {
   res.render('ajax', {
-	'msg' : (msgstring)
+	'msg' : (msgstring),
+	'killlog' : (killlog)
   });
 });
 

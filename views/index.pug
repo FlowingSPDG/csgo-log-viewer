@@ -7,5 +7,7 @@ block content
 	h1= title
 	p Welcome to #{title}
 	#ajaxreload
-		#logs
-		p!= msg
+		#msg
+			p!= msg
+		#killlog
+			p!= killlog
