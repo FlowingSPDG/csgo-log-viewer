@@ -23,7 +23,7 @@ var logReceiver = require("srcds-log-receiver");
 var options = {
 	port: 9871  // this is the default
 };
-var matchstart = 'Match_Start';
+//var matchstart = 'Match_Start';
 //document.write("Hello");
 var msg = String ();
 //var msgstring = Array ();
@@ -444,7 +444,7 @@ app.get('/', (req, res) => {
 	'title' : 'CS:GO Server Log viewer',  
     'content': 'Hello World',
 	'msg' : (msgstring),
-	'killlog' : (killlog)
+	//'killlog' : (killlog)
   });
 });
 
@@ -453,7 +453,7 @@ app.get('/', (req, res) => {
 app.get('/ajax', (req, res) => {
   res.render('ajax', {
 	'msg' : (msgstring),
-	'killlog' : (killlog)
+	//'killlog' : (killlog)
   });
 });
 
