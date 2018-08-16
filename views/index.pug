@@ -6,8 +6,13 @@ block content
 	script(src="js/ajax.js")
 	h1= title
 	p Welcome to #{title}
+	p CT TEAMNAME : #{ct}
+	p TERRORISTS TEAMNAME : #{t}
 	#ajaxreload
 		#msg
+			//p!= map
+			//p!= tname
+			//p!= ctname
 			p!= msg
 		//#killlog
 			p!= killlog

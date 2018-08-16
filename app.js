@@ -28,6 +28,11 @@ var options = {
 var msg = String ();
 //var msgstring = Array ();
 var msgstring = String ();
+var mapname = String ();
+var ctname = String ();
+var tname = String ();
+var ctnamepug = String ();
+var tnamepug = String ();
 var killlog = String ();
 var triggerednum = Number ();
 var name = String ();
@@ -385,17 +390,47 @@ receiver.on("data", function(data) {
 				msgstring += (name + ' has switched team ' + teamfrom + ' to ' + teamto);
 				msgstring += ('</p>');
 			}
+			else if (msg.indexOf('Started map "') > -1){
+				console.log("Map start detected!");
+				console.log(msg);
+				var mapnamekari = msg.substr(23); // 日時を削除
+				var mapnamepos1 = mapnamekari.indexOf('" (CRC'); // 最初の<が見つかった場所を返す
+				var mapname = msg.substr(35,mapnamepos1);
+				console.log(devprefix + 'MAPNAME IS ' + mapname);
+			}
+			else if (msg.indexOf('Team playing "CT":') > -1){
+				console.log("CT TeamName Detected!");
+				console.log(msg);
+				var ctnamepos1 = msg.indexOf('"CT": '); // 最初の<が見つかった場所を返す
+				ctnamepos1 = ctnamepos1 + 6;
+				var ctname = msg.substr(ctnamepos1);
+				console.log(devprefix + 'CT TEAM NAME IS ' + ctname);
+				msgstring += ('CT TEAM NAME IS ' + ctname + '<br>');
+				ctnamepug += (ctname);
+				////Team playing "CT": <pŠ>
+			}
+			else if (msg.indexOf('Team playing "TERRORIST":') > -1){
+				console.log("T TeamName Detected!");
+				console.log(msg);
+				var tnamepos1 = msg.indexOf('"TERRORIST'); // 最初の<が見つかった場所を返す
+				tnamepos1 = tnamepos1 + 13;
+				var tname = msg.substr(tnamepos1);
+				console.log(devprefix + 'T TEAM NAME IS ' + tname);
+				msgstring += ('T TEAM NAME IS ' + tname + '<br>');
+				tnamepug += (tname);
+				////Team playing "TERRORIST": tes
+			}
 			else if (msg.indexOf("attacked") > -1){
 				console.log("Attack log detected");
-				console.log(msg);
+				//console.log(msg);
 			}
 			else if (msg.indexOf("purchased") > -1){
 				console.log("Purchased log detected");
-				console.log(msg);
+				//console.log(msg);
 			}
 			else if (msg.indexOf("server_cvar") > -1){
 				console.log("server_cvar log detected");
-				console.log(msg);
+				//console.log(msg);
 			}
 			else if (msg.indexOf("blinded") > -1){
 				console.log("blinded log detected");
@@ -407,7 +442,7 @@ receiver.on("data", function(data) {
 			}
 			else if (msg.indexOf("left buyzone") > -1){
 				console.log("left buyzone log detected");
-				console.log(msg);
+				//console.log(msg);
 			}
 			else if (msg.indexOf("Molotov projectile spawned") > -1){
 				console.log("Molotov log detected");
@@ -443,7 +478,11 @@ app.get('/', (req, res) => {
   res.render('index', {
 	'title' : 'CS:GO Server Log viewer',  
     'content': 'Hello World',
+	'map' : (mapname),
 	'msg' : (msgstring),
+	'ct' : (ctname),
+	't' : (tname),
+	pretty: true
 	//'killlog' : (killlog)
   });
 });
@@ -453,6 +492,10 @@ app.get('/', (req, res) => {
 app.get('/ajax', (req, res) => {
   res.render('ajax', {
 	'msg' : (msgstring),
+	'map' : (mapname),
+	'ct' : (ctnamepug),
+	't' : (tnamepug),
+	pretty: true
 	//'killlog' : (killlog)
   });
 });
