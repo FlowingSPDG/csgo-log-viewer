@@ -482,6 +482,20 @@ receiver.on("data", function(data) {
 				console.log("server_cvar log detected");
 				//console.log(msg);
 			}
+			
+			/*
+			else if (msg.indexOf("server cvars start") > -1){
+				console.log("server cvar start detected");
+				//console.log(msg);
+				var pushtomsg = false;
+			}
+			else if (msg.indexOf("server cvars end") > -1){
+				console.log("server cvar end detected");
+				//console.log(msg);
+				var pushtomsg = true;
+			}
+			*/
+			
 			else if (msg.indexOf("blinded") > -1){
 				console.log("blinded log detected");
 				console.log(msg);
