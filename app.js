@@ -40,6 +40,9 @@ var chatmsg = String ();
 var chatmsg2 = String ();
 var chatmsgpos = Number ();
 var devprefix = String ();
+var roundcount = Number ();
+var ctscore = Number ();
+var trscore = Number ();
 devprefix = ('[DEBUG] : ');
 var receiver = new logReceiver.LogReceiver();
 receiver.on("data", function(data) {
@@ -80,9 +83,11 @@ receiver.on("data", function(data) {
 			else if (msg.indexOf('World triggered "Match_Start"') > -1){
 				console.log("MATCH HAS STARTED!!");
 				console.log(msg);
+				msgstring = "";
 				msgstring += ("<h2>");
 				msgstring += ("MATCH HAS STARTED!!");
 				msgstring += ("</h2>");
+				roundcount = 0;
 			}
 			else if (msg.indexOf('World triggered "Round_Start"') > -1){
 				console.log("ROUND HAS STARTED!");
@@ -90,6 +95,7 @@ receiver.on("data", function(data) {
 				msgstring += ("<h2>");
 				msgstring += ("ROUND HAS STARTED!");
 				msgstring += ("</h2>");
+				roundcount ++;
 			}
 			else if (msg.indexOf('World triggered "Round_End"') > -1){
 				console.log("ROUND HAS ENDED!");
@@ -230,6 +236,8 @@ receiver.on("data", function(data) {
 					msgstring += ('<h3 class="trwin">');
 					msgstring += ("Terrorists wins the round!");
 					msgstring += ("</h3>");
+					//trscore++;
+					//msgstring += ("<h3>" + "T SCORE : " + trscore);
 				}
 			}
 			else if (msg.indexOf('SFUI_Notice_Target_Bombed') > -1){
@@ -247,7 +255,7 @@ receiver.on("data", function(data) {
 					msgstring += ('<h1>');
 					msgstring += ('MATCH HISTORY WILL BE CLEAR IN 10sec...');
 					msgstring += ('</h1>');
-					sleep(10000);
+					//sleep(10000);
 					msgstring = String ();
 				}
 				else {
@@ -256,6 +264,8 @@ receiver.on("data", function(data) {
 					msgstring += ('<h3 class="trwin">');
 					msgstring += ("Terrorists wins the round!");
 					msgstring += ("</h3>");
+					//trscore++;
+					//msgstring += ("<h3>" + "T SCORE : " + trscore);
 				}
 			}
 			else if (msg.indexOf('SFUI_Notice_CTs_Win') > -1){
@@ -270,7 +280,7 @@ receiver.on("data", function(data) {
 					msgstring += ('<h1>');
 					msgstring += ('MATCH HISTORY WILL BE CLEAR IN 10sec...');
 					msgstring += ('</h1>');
-					sleep(10000);
+					//sleep(10000);
 					msgstring = String ();
 				}
 				else {
@@ -279,6 +289,8 @@ receiver.on("data", function(data) {
 					msgstring += ('<h3 class="ctwin">');
 					msgstring += ("Counter-errorists wins the round!");
 					msgstring += ("</h3>");
+					//ctscore++;
+					//msgstring += ("<h3>" + "CT SCORE : " + ctscore + "</h3>");
 				}
 			}
 			else if (msg.indexOf('SFUI_Notice_Bomb_Defused') > -1){
@@ -293,7 +305,7 @@ receiver.on("data", function(data) {
 					msgstring += ('<h1>');
 					msgstring += ('MATCH HISTORY WILL BE CLEAR IN 10sec...');
 					msgstring += ('</h1>');
-					sleep(10000);
+					//sleep(10000);
 					msgstring = String ();
 				}
 				else {
@@ -302,6 +314,8 @@ receiver.on("data", function(data) {
 					msgstring += ('<h3 class="ctwin">');
 					msgstring += ("Counter-errorists wins the round!");
 					msgstring += ("</h3>");
+					//ctscore++;
+					//msgstring += ("<h3>" + "CT SCORE : " + ctscore + "</h3>");
 				}
 			}
 			else if (msg.indexOf("Game Over:") > -1){
@@ -313,7 +327,7 @@ receiver.on("data", function(data) {
 				msgstring += ('<h1>');
 				msgstring += ('MATCH HISTORY WILL BE CLEAR IN 10sec...');
 				msgstring += ('</h1>');
-				sleep(10000);
+				//sleep(10000);
 				msgstring = String ();
 			}
 			else if (msg.indexOf('say "') > -1){
@@ -398,6 +412,38 @@ receiver.on("data", function(data) {
 				var mapname = msg.substr(35,mapnamepos1);
 				console.log(devprefix + 'MAPNAME IS ' + mapname);
 			}
+			
+			else if (msg.indexOf('" scored ') > -1){
+				console.log("score detected!");
+				console.log(msg);
+				var scorekari = msg.substr(29); // 日時を削除
+				var teamname1pos = scorekari.indexOf('"'); // 最初のダブルクオーテーションが見つかった場所を返す
+				
+				var teamname = scorekari.substr(0,teamname1pos);
+				scorekari = scorekari.substr(11);
+				var team1scorepos1 = scorekari.indexOf('"'); // 最初のダブルクオーテーションが見つかった場所を返す
+				team1scorepos1 ++;
+				var team1score = scorekari.substr(team1scorepos1);
+				var team1scorepos2 = scorekari.indexOf('" w'); // withの場所を返す
+				var team1score = team1score.substr(0,team1scorepos2);
+				var score1 = scorekari.slice(0,-17);
+				var score1 = score1.replace( "scored" , "" ) ;
+
+				var scoreboardprefix = '[SCOREBOARD]';
+				console.log(devprefix + teamname); 
+				//console.log(devprefix + team1score); 
+				console.log(devprefix + scorekari); 
+				console.log(devprefix + score1); 
+				console.log(devprefix + teamname + " scored " + score1);
+				msgstring += ('<h2>' + scoreboardprefix + " " + teamname + " SCORED " + score1 + "</h2><br>");
+				
+				//msgstring += (teamname + ' SCORED : ' + " ");
+				
+				//console.log(devprefix + score); 
+				//08/29/2018 - 08:52:35: Team "CT" scored "1" with "2" players
+			}
+			
+			
 			else if (msg.indexOf('Team playing "CT":') > -1){
 				console.log("CT TeamName Detected!");
 				console.log(msg);
