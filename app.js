@@ -507,9 +507,9 @@ receiver.on("data", function(data) {
 				console.log(msg);
 			}
 			else {
-				msgstring += ('<p class="logs">');
-				msgstring += (data.message);
-				msgstring += ("</p>");
+				//msgstring += ('<p class="logs">');
+				//msgstring += (data.message);
+				//msgstring += ("</p>");
 			}
 	}
 
