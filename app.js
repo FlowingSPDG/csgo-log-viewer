@@ -141,6 +141,7 @@ receiver.on("data", function(data) {
 				triggerednamepos--; //二重引用符削除
 				var name = namekari.substr(1,triggerednamepos);
 				
+				/*
 				console.log(result);
 				msgstring += ("<h3>");
 				msgstring += ('<font color="red">');
@@ -148,6 +149,7 @@ receiver.on("data", function(data) {
 				msgstring += ('</font>');
 				msgstring += (" DROPPED BOMB!");
 				msgstring += ("</h3>");
+				*/
 			}
 			else if (msg.indexOf('triggered "Got_The_Bomb"') > -1){
 				console.log("BOMB HAS BEEN TAKEN!");
@@ -159,12 +161,14 @@ receiver.on("data", function(data) {
 				var triggerednamepos = namekari.indexOf("<"); //<の文字列が見つかった場所を返す
 				triggerednamepos--; //二重引用符削除
 				var name = namekari.substr(1,triggerednamepos);
+				/*
 				msgstring += ("<h3>");
 				msgstring += ('<font color="red">');
 				msgstring += (name);
 				msgstring += ('</font>');
 				msgstring += (' GOT THE BOMB!');
 				msgstring += ("</h3>");
+				*/
 			}
 			else if (msg.indexOf('Begin_Bomb_Defuse') > -1){
 				console.log("BOMB DEFUSE STARTED!");
